@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>بنك أسئلة الكلية</title>
+<style>
+:root{--bg:#f6f7fb;--card:#fff;--text:#1d2433;--muted:#667085;--main:#4f46e5;--ok:#16a34a;--bad:#dc2626;--line:#e4e7ec;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1220;--card:#1a1f33;--text:#eef0f7;--muted:#9aa3b8;--main:#818cf8;--line:#2b3250}}
+*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--text);font-family:"Segoe UI",Tahoma,Arial,sans-serif;line-height:1.7}
+.wrap{max-width:640px;margin:0 auto;padding:20px 16px 40px}
+h1{font-size:1.4rem;margin:8px 0 4px}
+.sub{color:var(--muted);margin:0 0 18px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:16px;margin-bottom:12px}
+.subjects{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+button{font:inherit;cursor:pointer}
+.subj{background:var(--card);color:var(--text);border:1px solid var(--line);border-radius:14px;padding:16px 10px;text-align:center}
+.subj b{display:block;font-size:1.05rem}
+.subj span{color:var(--muted);font-size:.85rem}
+.opt{display:block;width:100%;text-align:right;background:var(--bg);color:var(--text);border:1px solid var(--line);border-radius:10px;padding:10px 12px;margin-top:8px}
+.opt.ok{border-color:var(--ok);background:rgba(22,163,74,.15)}
+.opt.bad{border-color:var(--bad);background:rgba(220,38,38,.15)}
+.btn{background:var(--main);color:#fff;border:0;border-radius:10px;padding:10px 18px;margin-top:12px}
+.ghost{background:none;color:var(--main);border:0;padding:4px 0;margin-bottom:10px}
+.bar{height:6px;background:var(--line);border-radius:9px;overflow:hidden;margin-bottom:14px}
+.bar i{display:block;height:100%;background:var(--main);width:0;transition:width .3s}
+.note{color:var(--muted);font-size:.85rem;margin-top:8px}
+.score{font-size:2rem;text-align:center;margin:8px 0}
+</style>
+</head>
+<body>
+<div class="wrap" id="app"></div>
+<script>
+// ✏️ عدّل هنا: ضيف موادك وأسئلتك. a = رقم الإجابة الصح (يبدأ من 0)
+const DATA = {
+  "الإحصاء": [
+    {q:"المتوسط الحسابي لـ (2, 4, 6) يساوي؟", o:["3","4","5","6"], a:1},
+    {q:"الوسيط للأرقام (1, 3, 9) هو؟", o:["1","3","9","4.3"], a:1},
+    {q:"أكثر قيمة تكراراً في البيانات تسمى؟", o:["الوسيط","المدى","المنوال","التباين"], a:2}
+  ],
+  "الأحياء": [
+    {q:"وحدة البناء الأساسية في الكائنات الحية؟", o:["النسيج","الخلية","العضو","الجهاز"], a:1},
+    {q:"أي عضية مسؤولة عن إنتاج الطاقة؟", o:["النواة","الريبوسوم","الميتوكوندريا","الجولجي"], a:2}
+  ],
+  "الكيمياء": [
+    {q:"الرمز الكيميائي للماء؟", o:["CO2","H2O","O2","NaCl"], a:1},
+    {q:"عدد الذرات في جزيء الأكسجين O2؟", o:["1","2","3","4"], a:1}
+  ]
+};
+const app = document.getElementById("app");
+let subject=null, i=0, score=0, answered=false;
+
+function home(){
+  subject=null;
+  app.innerHTML = `<h1>📚 بنك أسئلة الكلية</h1><p class="sub">اختار المادة وابدأ اختبار سريع</p>
+  <div class="subjects">${Object.keys(DATA).map(s=>`<button class="subj" data-s="${s}"><b>${s}</b><span>${DATA[s].length} أسئلة</span></button>`).join("")}</div>
+  <p class="note">نموذج تجريبي — الأسئلة دي أمثلة بس.</p>`;
+  app.querySelectorAll(".subj").forEach(b=>b.onclick=()=>start(b.dataset.s));
+}
+function start(s){subject=s;i=0;score=0;show();}
+function show(){
+  const list=DATA[subject], q=list[i]; answered=false;
+  app.innerHTML = `<button class="ghost" id="back">← رجوع للمواد</button>
+  <div class="bar"><i style="width:${i/list.length*100}%"></i></div>
+  <div class="card"><b>سؤال ${i+1} من ${list.length}</b><p>${q.q}</p>
+  ${q.o.map((t,k)=>`<button class="opt" data-k="${k}">${t}</button>`).join("")}</div>
+  <div id="nx"></div>`;
+  document.getElementById("back").onclick=home;
+  app.querySelectorAll(".opt").forEach(b=>b.onclick=()=>pick(+b.dataset.k));
+}
+function pick(k){
+  if(answered)return; answered=true;
+  const q=DATA[subject][i];
+  if(k===q.a)score++;
+  app.querySelectorAll(".opt").forEach((b,n)=>{
+    if(n===q.a)b.classList.add("ok"); else if(n===k)b.classList.add("bad");
+  });
+  const last=i===DATA[subject].length-1;
+  const nx=document.getElementById("nx");
+  nx.innerHTML=`<button class="btn" id="go">${last?"شوف النتيجة":"السؤال التالي"}</button>`;
+  document.getElementById("go").onclick=()=>{ if(last)finish(); else{i++;show();} };
+}
+function finish(){
+  const n=DATA[subject].length;
+  app.innerHTML=`<div class="card"><p class="score">${score} / ${n}</p>
+  <p style="text-align:center">${score===n?"ممتاز! 🎉":score>=n/2?"كويس، كمّل 💪":"حاول تاني، هتبقى أحسن 🙂"}</p>
+  <button class="btn" id="again">أعد الاختبار</button> <button class="btn" id="home" style="background:var(--muted)">المواد</button></div>`;
+  document.getElementById("again").onclick=()=>start(subject);
+  document.getElementById("home").onclick=home;
+}
+home();
+</script>
+</body>
+</html>
