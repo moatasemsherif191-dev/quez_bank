@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Quiz</title>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Pacifico&display=swap">
+<style>
+:root{--bg:#eaf4f2;--bg2:#d5eae6;--fg:#17323a;--card:#f8fcfb;--bd:#b7d5cf;--ac:#0f766e;--ok:#1f7a4d;--okb:#d3f0df;--no:#b83232;--nob:#fbdcdc;--mut:#4f6b70;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]){--bg:#0f1e22;--bg2:#162d33;--fg:#e3f1ef;--card:#172b30;--bd:#2c474d;--ac:#5fd3c4;--ok:#6fd58a;--okb:#163326;--no:#ff8f8f;--nob:#3a1c1f;--mut:#8fb0b0}}
+:root[data-theme="dark"]{--bg:#0f1e22;--bg2:#162d33;--fg:#e3f1ef;--card:#172b30;--bd:#2c474d;--ac:#5fd3c4;--ok:#6fd58a;--okb:#163326;--no:#ff8f8f;--nob:#3a1c1f;--mut:#8fb0b0}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}
+body{margin:0;background:linear-gradient(160deg,var(--bg2),var(--bg)) fixed;color:var(--fg);font-family:system-ui,-apple-system,"Segoe UI",Tahoma,Arial,sans-serif;line-height:1.6}
+main{max-width:640px;margin:0 auto;padding:16px}
+h1{font-size:1.3rem;margin:8px 0 4px}
+.sub{color:var(--mut);font-size:.9rem;margin-bottom:14px}
+.q{background:var(--card);border:1px solid var(--bd);border-inline-start:5px solid var(--ac);border-radius:14px;padding:14px;margin-bottom:12px;box-shadow:0 2px 8px rgba(15,70,70,.10)}
+.tag{font-size:.75rem;color:var(--ac);font-weight:600;direction:ltr;unicode-bidi:isolate;text-align:right}
+.qt{font-weight:600;margin:4px 0 10px}
+.o{display:block;width:100%;text-align:start;background:transparent;color:var(--fg);border:1px solid var(--bd);border-radius:10px;padding:10px 12px;margin-bottom:8px;font:inherit;cursor:pointer}
+.o.sel{border-color:var(--ac);background:rgba(15,118,110,.16)}
+.o.ok{border-color:var(--ok);background:var(--okb)}
+.o.no{border-color:var(--no);background:var(--nob)}
+.chk{background:transparent;color:var(--ac);border:1px solid var(--ac);border-radius:10px;padding:8px 12px;font:inherit;cursor:pointer;margin-top:2px}
+.done .chk{display:none}
+.fb{font-weight:600;margin-top:8px}
+.ex{display:none;font-size:.88rem;color:var(--mut);margin-top:6px}
+.done .ex{display:block}
+.btn{display:block;width:100%;background:var(--ac);color:#fff;border:0;border-radius:12px;padding:14px;font:inherit;font-weight:700;cursor:pointer;margin:14px 0}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) .btn{color:#10131f}}
+:root[data-theme="dark"] .btn{color:#10131f}
+#res{display:none;background:var(--card);border:2px solid var(--ac);border-radius:14px;padding:16px;text-align:center;margin-bottom:14px}
+#res b{font-size:2rem;display:block}
+.sig{font-family:"Pacifico","Brush Script MT",cursive;text-align:center;color:var(--ac);font-size:1.15rem;margin:6px 0 16px}
+</style>
+</head>
+<body>
+<main>
+<h1 dir="ltr" style="text-align:center;font-size:1.6rem;margin-bottom:0;color:var(--ac)">Quiz</h1>
+<div class="sig" dir="ltr" style="font-size:1.5rem;margin-bottom:18px">63 White Coats 🤍</div>
+<div id="res"></div>
+<div id="qs"></div>
+<button class="btn" id="go">تسليم</button>
+<button class="btn" id="again" style="display:none">إعادة المحاولة</button>
+<div class="sig" dir="ltr" style="font-size:1.4rem">63 White Coats 🤍</div>
+</main>
+<script>
+var Q=[
+{s:"ميكرو",q:"Ribosomes of prokaryotes are:",o:["80S (40S + 60S)","70S (50S + 30S)","60S (40S + 20S)","90S"],a:1,e:"البروكاريوت ريبوسوماتها 70S، واليوكاريوت 80S."},
+{s:"باراسيتو",q:"The infective stage of Heterophyes heterophyes is:",o:["Mature egg","Cercaria","Encysted metacercaria","Miracidium"],a:2,e:"العدوى بأكل سمك نيّ أو غير مطبوخ فيه encysted metacercaria."},
+{s:"ميكرو",q:"The only bacteria that naturally lack a cell wall are:",o:["Mycoplasma","Spirochetes","Clostridium","Rickettsia"],a:0,e:"Mycoplasma بدون جدار خلوي، وغشاؤها فيه sterol، وpleomorphic ومقاومة للبنسلين."},
+{s:"باراسيتو",q:"Which of the following differs Schistosomes from other trematodes?",o:["Hermaphrodite adult","Operculated eggs","Presence of redial stage","Separate sexes"],a:3,e:"الشيستوسوما جنسين منفصلين، وبيضها بشوكة، وملهاش redia."},
+{s:"ميكرو",q:"Porins are protein channels found in the:",o:["Gram +ve peptidoglycan","Gram -ve outer membrane","Cytoplasmic membrane of mycoplasma","Bacterial capsule"],a:1,e:"الـ porins في الغشاء الخارجي للجرام سالب، وبتدخل المركبات الصغيرة ببطء للمضادات الكبيرة، فده سبب مقاومتها العالية."},
+{s:"باراسيتو",q:"Halzoun (pharyngeal fascioliasis) results from ingestion of:",o:["Raw fish","Undercooked pork","Fresh raw liver containing adult Fasciola","Contaminated water"],a:2,e:"أكل كبدة نيّة فيها الدودة البالغة، فتلزق في البلعوم وتعمل وذمة واختناق."},
+{s:"ميكرو",q:"Spores are highly resistant to heat mainly due to:",o:["Capsule","Teichoic acid","Mesosomes","Calcium and dipicolinic acid"],a:3,e:"المقاومة للحرارة سببها Ca+2 وdipicolinic acid، وبتموت في الأوتوكلاف 121°م رطب 10-20 دقيقة."},
+{s:"باراسيتو",q:"The egg of S. haematobium is characterized by:",o:["Lateral spine, found in feces","Terminal spine, found in urine","No spine, with a lateral tubercle","Operculum, found in feces"],a:1,e:"البلهارسيا البولية: شوكة طرفية والبيض في البول. المنسوني: شوكة جانبية في البراز."},
+{s:"ميكرو",q:"Which organism is an obligate anaerobe?",o:["Mycobacterium T.B.","Clostridium","E. coli","Campylobacter"],a:1,e:"Clostridium مفيهوش catalase ولا SOD فالأكسجين بيقتله. التدرن aerobe، وCampylobacter microaerophilic."},
+{s:"باراسيتو",q:"Katayama fever is most common with:",o:["S. japonicum","S. haematobium","S. mansoni","Fasciola hepatica"],a:0,e:"Katayama رد فعل مناعي ضد البيض في العدوى الشديدة، وأشهر مع S. japonicum."},
+{s:"ميكرو",q:"The capsule of Bacillus anthracis is made of:",o:["Polysaccharide","Hyaluronic acid","Polypeptide","Lipopolysaccharide"],a:2,e:"معظم الكبسولات polysaccharide، والـ polypeptide في Bacillus anthracis فقط، وhyaluronic في Strept. pyogenes."},
+{s:"باراسيتو",q:"Cercarial dermatitis (swimmer's itch) is caused by:",o:["Cercariae of non-human schistosomes","Adult S. mansoni","Metacercariae of Fasciola","Miracidia of S. haematobium"],a:0,e:"cercariae بتاعة بلهارسيا طيور وحيوانات بتخش الجلد وتعمل حكة والتهاب ومبتكملش بعد كده."},
+{s:"ميكرو",q:"The incubation period of a disease corresponds to which phase of the bacterial growth curve?",o:["Lag phase","Log phase","Stationary phase","Decline phase"],a:0,e:"Lag = فترة الحضانة، Log = الأعراض والمرحلة الحادة (والمضادات مؤثرة)، Decline = النقاهة."},
+{s:"باراسيتو",q:"Diphyllobothrium latum infection may cause:",o:["Microcytic anemia","Megaloblastic anemia (B12 deficiency)","Hemolytic anemia","Aplastic anemia"],a:1,e:"الدودة بتنافس العائل على فيتامين B12، فبيحصل macrocytic/megaloblastic anemia. العلاج praziquantel أو niclosamide + B12."},
+{s:"ميكرو",q:"Lipid A of Gram-negative bacteria is:",o:["An exotoxin","Teichoic acid","An endotoxin","A porin"],a:2,e:"Lipid A هو الـ endotoxin، والسبب في endotoxin shock، وهو heat-stable."},
+{s:"باراسيتو",q:"After treatment of Taenia solium, which must be given one hour later?",o:["Vitamin B12","Saline purge","Antihistamine","Praziquantel again"],a:1,e:"في T. solium لازم saline purge بعد العلاج بساعة."},
+{s:"ميكرو",q:"Teichoic acid is a component of the cell wall of:",o:["Gram negative bacteria only","Mycoplasma","Gram positive bacteria","Viruses"],a:2,e:"Teichoic & teichuronic acid في الجرام موجب، ووظيفتها antigenic. الجرام سالب فيه outer membrane وLPS."},
+{s:"باراسيتو",q:"The first intermediate host of Schistosoma mansoni is:",o:["Bulinus truncatus","Pirenella conica","Biomphalaria alexandrina","Lymnaea truncatula"],a:2,e:"المنسوني: Biomphalaria. الهيماتوبيوم: Bulinus truncatus. الفاشيولا: Lymnaea."},
+{s:"ميكرو",q:"Plasmids are:",o:["Essential for growth and replication","Extrachromosomal circular dsDNA that may carry antibiotic resistance genes","Linear ssRNA molecules","The site of protein synthesis"],a:1,e:"البلازميد DNA دائري صغير خارج الكروموسوم، بيتضاعف لوحده، ومش ضروري للنمو، وبيشيل R factor مثلا."},
+{s:"باراسيتو",q:"Which tapeworm does NOT need an intermediate host?",o:["Taenia saginata","Diphyllobothrium latum","Hymenolepis nana","Taenia solium"],a:2,e:"كل الـ cestodes محتاجة intermediate host ما عدا H. nana (ممكن بالـ autoinfection)، وعلاجها يتكرر بعد 10 أيام."}
+];
+var sel=[],done=false,qs=document.getElementById("qs");
+function render(){
+ qs.innerHTML="";qs.className="";sel=[];done=false;
+ Q.forEach(function(x,i){
+  var d=document.createElement("div");d.className="q";d.id="q"+i;
+  d.innerHTML='<div class="tag">'+(i+1)+" / 20"+'</div><div class="qt" dir="ltr" style="text-align:left">'+x.q+"</div>";
+  x.o.forEach(function(t,j){
+   var b=document.createElement("button");b.className="o";b.type="button";b.dir="ltr";b.style.textAlign="left";b.textContent=t;
+   b.onclick=function(){if(done||d.dataset.chk)return;sel[i]=j;[].forEach.call(d.querySelectorAll(".o"),function(n,k){n.classList.toggle("sel",k===j)})};
+   d.appendChild(b);
+  });
+  var cb=document.createElement("button");cb.type="button";cb.className="chk";cb.textContent="تأكد من إجابتك للسؤال ده";
+  var fb=document.createElement("div");fb.className="fb";
+  var e=document.createElement("div");e.className="ex";e.textContent="💡 "+x.e;
+  cb.onclick=function(){
+   if(sel[i]===undefined){fb.textContent="اختار إجابة الأول 🙂";fb.style.color="var(--mut)";return}
+   d.dataset.chk=1;
+   var os=d.querySelectorAll(".o");os[x.a].classList.add("ok");
+   if(sel[i]===x.a){fb.textContent="✅ إجابتك صح";fb.style.color="var(--ok)"}
+   else{os[sel[i]].classList.add("no");fb.textContent="❌ إجابتك غلط، الصح: "+x.o[x.a];fb.style.color="var(--no)"}
+   e.style.display="block";cb.style.display="none";
+  };
+  d.appendChild(cb);d.appendChild(fb);d.appendChild(e);
+  qs.appendChild(d);
+  if((i+1)%5===0&&i<19){var s=document.createElement("div");s.className="sig";s.dir="ltr";s.textContent="63 White Coats 🤍";qs.appendChild(s);}
+ });
+ document.getElementById("res").style.display="none";
+ document.getElementById("go").style.display="block";
+ document.getElementById("again").style.display="none";
+}
+document.getElementById("go").onclick=function(){
+ var left=Q.length-sel.filter(function(v){return v!==undefined}).length;
+ if(left>0&&!confirm("لسه فاضل "+left+" سؤال من غير إجابة. تسلّم كده؟"))return;
+ done=true;qs.className="done";var sc=0;
+ Q.forEach(function(x,i){
+  var os=document.querySelectorAll("#q"+i+" .o");
+  os[x.a].classList.add("ok");
+  if(sel[i]===x.a)sc++;else if(sel[i]!==undefined)os[sel[i]].classList.add("no");
+ });
+ var r=document.getElementById("res");
+ var p=Math.round(sc*5);
+ r.innerHTML="<b>"+sc+" / 20</b>("+p+"%) "+(sc>=16?"ممتاز 🔥":sc>=12?"كويس، راجع الأخطاء 👍":"محتاج مراجعة أكتر 📚")+"<br><small>الأخضر الإجابة الصح، والأحمر إجابتك الغلط، والشرح تحت كل سؤال</small>";
+ r.style.display="block";
+ this.style.display="none";document.getElementById("again").style.display="block";
+ window.scrollTo(0,0);
+};
+document.getElementById("again").onclick=function(){render();window.scrollTo(0,0)};
+render();
+</script>
+</body>
+</html>
