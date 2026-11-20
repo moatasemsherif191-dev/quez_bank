@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Quiz</title>
+<link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&family=Cairo:wght@400;600;800&display=swap" rel="stylesheet">
+<style>
+:root{--deep:#0a3d3a;--dark:#062a28;--em:#13806f;--mint:#e2f3ec;--gold:#e0b04c;--gold2:#f6d98a;--ivory:#fdf8ec;--ink:#10302d;--ok:#1c8a5b;--bad:#c0392b;--mute:#5f7f7a}
+*{box-sizing:border-box}
+body{margin:0;color:var(--ink);font-family:Cairo,system-ui,sans-serif;line-height:1.7;background:var(--ivory) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Cg fill='none' stroke='%2313806f' stroke-opacity='.09' stroke-width='1.2'%3E%3Crect x='10' y='10' width='28' height='28'/%3E%3Crect x='10' y='10' width='28' height='28' transform='rotate(45 24 24)'/%3E%3C/g%3E%3C/svg%3E")}
+main{max-width:720px;margin:0 auto;padding:0 16px}
+.hero{position:relative;overflow:hidden;margin:0 -16px 24px;padding:16px 18px 100px;text-align:center;color:#fff;border-radius:0 0 36px 36px;box-shadow:0 8px 0 var(--gold);background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Cg fill='none' stroke='%23e0b04c' stroke-opacity='.2' stroke-width='1.2'%3E%3Crect x='10' y='10' width='28' height='28'/%3E%3Crect x='10' y='10' width='28' height='28' transform='rotate(45 24 24)'/%3E%3C/g%3E%3C/svg%3E"),radial-gradient(ellipse at 50% 100%,#2aa08c 0,transparent 58%),linear-gradient(160deg,#0f5a52,#062a28)}
+.sig{display:inline-flex;align-items:center;gap:8px;padding:7px 22px;border-radius:99px;background:linear-gradient(135deg,var(--gold2),var(--gold));color:var(--dark);font-size:1.3rem;font-weight:800;box-shadow:0 4px 0 #9a7218}
+.moon{position:absolute;top:14px;right:14px;width:42px;filter:drop-shadow(0 0 8px var(--gold2))}
+.bism{font-family:Amiri,serif;font-size:2.3rem;color:var(--gold2);margin:14px 0 0;line-height:1.7;text-shadow:0 0 14px rgba(246,217,138,.5)}
+.orn{display:flex;align-items:center;gap:10px;width:62%;margin:2px auto 8px}
+.orn:before,.orn:after{content:"";flex:1;height:1px;background:var(--gold)}
+.orn i{width:9px;height:9px;background:var(--gold);transform:rotate(45deg)}
+.hadith{max-width:520px;margin:0 auto;padding:10px 14px;font-family:Amiri,serif;font-size:1.4rem;line-height:1.9;border:1px solid rgba(246,217,138,.55);border-radius:16px;background:rgba(255,255,255,.07)}
+.src{margin:2px 0 6px;font-size:.85rem;color:var(--gold2);opacity:.9}
+.ayah{margin:0;font-family:Amiri,serif;font-size:1.15rem;color:var(--gold2)}
+h1{margin:6px 0 0;font-size:3.4rem;font-weight:800;line-height:1.1;letter-spacing:3px;background:linear-gradient(180deg,#fff,var(--gold2));-webkit-background-clip:text;background-clip:text;color:transparent}
+h2{display:inline-block;margin:24px 0 12px;padding:5px 20px;border:2px solid var(--gold);border-radius:99px;background:var(--deep);color:var(--gold2);font-size:1.05rem}
+.q{background:#fff;border:1.5px solid #ecdcb0;border-left:7px solid var(--em);border-radius:16px;padding:14px 16px;margin:0 0 14px;box-shadow:0 3px 0 #ecdcb0}
+.q p{display:flex;gap:12px;align-items:flex-start;margin:0 0 8px;font-weight:600;direction:ltr;text-align:left}
+.n{flex:none;display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:linear-gradient(135deg,var(--gold2),var(--gold));color:var(--dark);font-weight:800;box-shadow:0 0 0 3px #fff,0 0 0 5px var(--gold)}
+.opt{display:flex;gap:10px;align-items:flex-start;padding:8px 10px;border-radius:10px;margin:4px 0;cursor:pointer;direction:ltr;text-align:left;border:2px solid transparent}
+.opt:hover{background:var(--mint)}
+.opt input{margin-top:7px;accent-color:var(--em)}
+.opt:has(input:checked){background:var(--mint);border-color:var(--em)}
+.opt.ok{background:#d9f3e4;border-color:var(--ok)}
+.opt.no{background:#fbe7e4;border-color:var(--bad)}
+textarea{width:100%;min-height:64px;padding:10px;border:2px solid #ecdcb0;border-radius:10px;font:inherit;direction:ltr;resize:vertical;background:#fffdf6}
+textarea:focus,button:focus-visible{outline:3px solid var(--gold);outline-offset:2px}
+.model{margin-top:8px;padding:8px 10px;background:var(--mint);border-radius:10px;direction:ltr;text-align:left;font-size:.95rem}
+button{width:100%;margin-top:20px;padding:15px;border:0;border-radius:14px;background:linear-gradient(135deg,var(--em),#0a5c52);color:var(--gold2);font:800 1.2rem Cairo,sans-serif;cursor:pointer;box-shadow:0 6px 0 var(--dark)}
+button:active{transform:translateY(4px);box-shadow:0 2px 0 var(--dark)}
+#res{display:none;margin:0 0 18px;padding:16px;border:2px solid var(--gold);border-radius:16px;background:linear-gradient(135deg,var(--em),var(--deep));color:var(--gold2);text-align:center;font-size:1.5rem;font-weight:800}
+#res small{display:block;font-size:.9rem;font-weight:400;color:#fff}
+footer{margin:44px -16px 0;padding:30px 16px 26px;text-align:center;color:#cfe9e2;border-radius:36px 36px 0 0;box-shadow:0 -6px 0 var(--gold);background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='48' height='48'%3E%3Cg fill='none' stroke='%23e0b04c' stroke-opacity='.2' stroke-width='1.2'%3E%3Crect x='10' y='10' width='28' height='28'/%3E%3Crect x='10' y='10' width='28' height='28' transform='rotate(45 24 24)'/%3E%3C/g%3E%3C/svg%3E"),linear-gradient(180deg,#0f5a52,#062a28)}
+.dua{margin:0 0 12px;font-family:Amiri,serif;font-size:1.35rem;color:var(--gold2)}
+footer .sig{font-size:1.6rem;padding:9px 28px}
+.made{margin:12px 0 0;font-size:1rem;letter-spacing:.6px}
+.made b{color:var(--gold2)}
+.mini{display:flex;align-items:center;gap:10px;margin:2px 0 16px;color:var(--em);font-size:1rem;font-weight:800}
+.mini:before,.mini:after{content:"";flex:1;height:1px;background:var(--gold)}
+.lan{position:absolute;top:0;width:28px;filter:drop-shadow(0 0 8px var(--gold2));transform-origin:50% 0}
+.l1{left:14px}.l2{left:50px;top:-18px}
+@media (prefers-reduced-motion:no-preference){.lan{animation:sway 4s ease-in-out infinite}.l2{animation-delay:-2s}}
+@keyframes sway{50%{transform:rotate(7deg)}}
+.mosque{position:absolute;left:0;bottom:0;width:100%;height:84px}
+</style>
+</head>
+<body>
+<main>
+<header class="hero"><svg class="moon" viewBox="0 0 46 46" aria-hidden="true"><path d="M30 5a19 19 0 1 0 0 36a15 15 0 1 1 0-36z" fill="#f6d98a"/><path d="M37 12l1.8 4.2 4.2.4-3.2 2.8 1 4.2-3.8-2.2-3.8 2.2 1-4.2-3.2-2.8 4.2-.4z" fill="#f6d98a"/></svg><svg class="lan l1" viewBox="0 0 30 70" aria-hidden="true"><path d="M15 0v14" stroke="#e0b04c" stroke-width="1.5"/><path d="M9 14h12l3 6v18l-3 6H9l-3-6V20z" fill="#f6d98a"/><path d="M15 14v30M6 29h18" stroke="#e0b04c" stroke-width="1"/><rect x="10" y="44" width="10" height="4" fill="#e0b04c"/><path d="M15 48v8" stroke="#e0b04c"/><circle cx="15" cy="59" r="3" fill="#e0b04c"/></svg><svg class="lan l2" viewBox="0 0 30 70" aria-hidden="true"><path d="M15 0v14" stroke="#e0b04c" stroke-width="1.5"/><path d="M9 14h12l3 6v18l-3 6H9l-3-6V20z" fill="#f6d98a"/><path d="M15 14v30M6 29h18" stroke="#e0b04c" stroke-width="1"/><rect x="10" y="44" width="10" height="4" fill="#e0b04c"/><path d="M15 48v8" stroke="#e0b04c"/><circle cx="15" cy="59" r="3" fill="#e0b04c"/></svg><span class="sig">🥼 63 White Coats 🤍</span><p class="bism">بِسْمِ اللَّهِ الرَّحْمَٰنِ الرَّحِيمِ</p><div class="orn"><i></i></div><p class="hadith">«احْرِصْ عَلَى مَا يَنْفَعُكَ، وَاسْتَعِنْ بِاللَّهِ وَلَا تَعْجَزْ»</p><p class="src">رواه مسلم</p><p class="ayah">﴿ وَقُل رَّبِّ زِدْنِي عِلْمًا ﴾</p><h1>Quiz</h1><svg class="mosque" viewBox="0 0 400 90" preserveAspectRatio="xMidYMax slice" aria-hidden="true"><g fill="#062a28"><rect y="78" width="400" height="12"/><path d="M155 78V60A45 45 0 0 1 245 60V78z"/><rect x="199" y="4" width="2" height="14"/><circle cx="200" cy="5" r="3"/><rect x="95" y="30" width="12" height="48"/><path d="M93 30L101 12L109 30z"/><rect x="293" y="30" width="12" height="48"/><path d="M291 30L299 12L307 30z"/><path d="M20 78V68A22 22 0 0 1 64 68V78z"/><path d="M336 78V68A22 22 0 0 1 380 68V78z"/></g></svg></header>
+<div id="res"></div>
+<form id="f">
+<h2>اختر الإجابة الصحيحة (15)</h2>
+<div id="mcq"></div>
+<h2>أجب بإجابة قصيرة (5)</h2>
+<div id="wr"></div>
+<button type="submit" id="go">تسليم الإجابات</button>
+</form>
+<footer><p class="dua">وَفَّقَكُمُ اللَّهُ وَسَدَّدَ خُطَاكُمْ</p><span class="sig">🥼 63 White Coats 🤍</span><p class="made">Made by: <b>Dr. M. M. S</b></p></footer>
+</main>
+<script>
+const MCQ=[
+["A patient has fever and malaise, and blood culture shows Gram-negative bacilli. Which component is most responsible for endotoxin shock?",["Peptidoglycan","Lipid A (endotoxin) of the lipopolysaccharide layer","Teichoic acid","Flagellin"],1],
+["A mutation in the DNA gyrase enzyme is most likely to confer resistance to which class of antibiotics?",["Aminoglycosides","Macrolides","Quinolones","Beta-lactams"],2],
+["In the bacterial growth curve, the logarithmic phase corresponds clinically to:",["Incubation period","Convalescence","Recovery from disease","Period of clinical signs and symptoms (acute phase)","Latent period"],3],
+["Bacteria that grow best at human body temperature and are killed by oxygen are described as:",["Mesophilic, obligate anaerobes","Thermophilic, obligate aerobes","Mesophilic, facultative anaerobes","Thermophilic, obligate anaerobes","Psychrophilic, microaerophilic"],0],
+["The Aedes mosquito transmits:",["Epidemic typhus","Endemic typhus","Scrub typhus","Plague","Dengue fever"],4],
+["Which of the following parasites has NO intermediate host?",["Diphyllobothrium latum","Ascaris lumbricoides","Fasciola hepatica","Taenia saginata","Heterophyes heterophyes"],1],
+["The reservoir host of Heterophyes heterophyes is:",["Herbivorous animals","Rodents","Fish-eating animals","Monkey and mice","Dogs or cattle"],2],
+["Which of the following causes specific myiasis?",["Hypoderma","Lucilia","Calliphora","Sarcophaga","Fannia"],0],
+["Fleas are vectors of:",["Endemic relapsing fever","Trench fever","Epidemic relapsing fever","Endemic typhus","Epidemic typhus"],3],
+["Which of the following is NOT a mechanism of bacterial resistance to antimicrobials?",["Inhibition of cell wall synthesis","Efflux pumps","Enzymatic inactivation e.g. β-lactamase","Modification of the target site e.g. PBP-2a in MRSA","Decreased permeability by changing porins"],0],
+["All of the following are indications for antimicrobial combinations EXCEPT:",["Severe undiagnosed acute infections e.g. meningitis","Severe mixed infections","Simple infection by a known sensitive organism","Preventing resistance in tuberculosis","Bactericidal synergism in enterococcal sepsis"],2],
+["Heat-sensitive fluids such as serum can be sterilized by:",["Filtration","Autoclaving","Hot air oven","Boiling","Incineration"],0],
+["All of the following are characteristics of Schistosoma EXCEPT:",["Separate sexes","Absence of redial stage","Eggs with a spine","Cylindrical female","Operculated eggs"],4],
+["A patient has terminal hematuria, frequency and dysuria. The diagnostic stage is best looked for in:",["Stool","Sputum","Urine","Duodenal aspirate","Bone marrow"],2],
+["Cyclops is the intermediate host of all of the following EXCEPT:",["Diphyllobothrium latum","Dracunculus medinensis","Diphyllobothrium mansoni","Fasciola gigantica"],3]
+];
+const WR=[
+["Enumerate two bacterial virulence factors that enhance invasion.","Any two: collagenase and hyaluronidase (break down collagen and hyaluronic acid); leucocidin (destroys neutrophils and macrophages); lecithinase (lyses lecithin of the cell membrane)."],
+["Define myiasis.","The invasion of the tissues of animals or man by dipterous fly larvae."],
+["Mention two indications for chemoprophylaxis, with an example for each.","Any two: (1) persons exposed to a specific pathogen, e.g. benzathine penicillin in rheumatic fever or rifampicin in meningococcal meningitis; (2) surgical prophylaxis, e.g. large bowel surgery or amoxicillin before dental procedures; (3) susceptible persons, e.g. heart disease, immunocompromised patients, recurrent UTI."],
+["Give reason: Mycoplasma is resistant to penicillin.","It naturally lacks a cell wall, and penicillin acts by inhibiting cell wall synthesis."],
+["Mention the infective stage and the mode of infection of Ancylostoma duodenale.","Infective stage: filariform larva. Mode of infection: skin penetration when walking barefoot on contaminated soil."]
+];
+const L="ABCDE";
+const mcq=document.getElementById("mcq"),wr=document.getElementById("wr");
+MCQ.forEach((q,i)=>{
+ const d=document.createElement("div");d.className="q";
+ d.innerHTML=`<p><b class="n c${i%4}">${i+1}</b><span>${q[0]}</span></p>`+q[1].map((o,j)=>`<label class="opt"><input type="radio" name="q${i}" value="${j}"><span>${L[j]}. ${o}</span></label>`).join("");
+ mcq.appendChild(d);if(i%5===4)mcq.insertAdjacentHTML("beforeend",'<div class="mini">63 White Coats 🤍</div>');
+});
+WR.forEach((q,i)=>{
+ const d=document.createElement("div");d.className="q";
+ d.innerHTML=`<p><b class="n c${(i+15)%4}">${i+16}</b><span>${q[0]}</span></p><textarea name="w${i}" placeholder="Write your answer here"></textarea>`;
+ wr.appendChild(d);if(i===4)wr.insertAdjacentHTML("beforeend",'<div class="mini">63 White Coats 🤍</div>');
+});
+document.getElementById("f").addEventListener("submit",e=>{
+ e.preventDefault();
+ const f=e.target;
+ const blank=MCQ.filter((_,i)=>!f.querySelector(`input[name=q${i}]:checked`)).length;
+ if(blank&&!confirm(`فيه ${blank} سؤال اختياري من غير إجابة. تسلّم كده؟`))return;
+ let score=0;
+ MCQ.forEach((q,i)=>{
+  const pick=f.querySelector(`input[name=q${i}]:checked`);
+  const opts=f.querySelectorAll(`input[name=q${i}]`);
+  if(pick&&+pick.value===q[2])score++;
+  opts.forEach((o,j)=>{
+   o.disabled=true;
+   const lab=o.parentElement;
+   if(j===q[2])lab.classList.add("ok");
+   else if(o.checked)lab.classList.add("no");
+  });
+ });
+ f.querySelectorAll("textarea").forEach((t,i)=>{
+  t.disabled=true;
+  const m=document.createElement("div");m.className="model";
+  m.textContent="Model answer: "+WR[i][1];
+  t.after(m);
+ });
+ document.getElementById("go").style.display="none";
+ const r=document.getElementById("res");
+ r.style.display="block";
+ r.innerHTML=`${score} / ${MCQ.length}<small>الأسئلة الاختيارية. المقالي بيتصحح يدوي.</small>`;
+ window.scrollTo({top:0,behavior:"smooth"});
+});
+</script>
+</body>
+</html>
